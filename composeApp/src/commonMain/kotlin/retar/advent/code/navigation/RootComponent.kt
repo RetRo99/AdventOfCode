@@ -61,12 +61,12 @@ class DefaultRootComponent(
     }
 
     private fun getPathForConfig(configTest: ScreenConfig): String =
-        when (configTest) {
+        "/AdventOfCode/" + when (configTest) {
             is ScreenConfig.HistorianHysteria -> "/day1"
         }
 
     private fun getConfigForPath(path: String): ScreenConfig =
-        when (path.removePrefix("/")) {
+        when (path.removePrefix("/AdventOfCode/")) {
             "day1" -> ScreenConfig.HistorianHysteria
             else -> ScreenConfig.HistorianHysteria
         }
