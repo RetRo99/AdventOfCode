@@ -93,6 +93,7 @@ class DefaultRootComponent(
         ScreenConfig.HistorianHysteria -> RootComponent.Child.HistorianHysteria(
             DefaultHistorianHysteriaComponent(
                 componentContext = componentContext,
+                deepLink = (deepLink as? DeepLink.Web)?.path ?: "nothing"
             )
         )
     }

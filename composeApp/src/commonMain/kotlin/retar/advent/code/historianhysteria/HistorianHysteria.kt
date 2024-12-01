@@ -13,10 +13,11 @@ interface HistorianHysteriaComponent {
 
 class DefaultHistorianHysteriaComponent(
     componentContext: ComponentContext,
+    deepLink: String,
 ) : HistorianHysteriaComponent, ComponentContext by componentContext {
 
     override val viewState: MutableValue<HistorianHysteriaViewState> =
-        MutableValue(HistorianHysteriaViewState("work in progress"))
+        MutableValue(HistorianHysteriaViewState(deepLink))
 
     override fun calculateDistance(): Int {
         TODO("Not yet implemented")
