@@ -60,8 +60,8 @@ class DefaultRootComponent(
         )
     }
 
-    private fun getPathForConfig(config: ScreenConfig): String =
-        when (config) {
+    private fun getPathForConfig(configTest: ScreenConfig): String =
+        when (configTest) {
             is ScreenConfig.HistorianHysteria -> "/day1"
         }
 
