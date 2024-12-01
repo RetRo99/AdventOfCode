@@ -21,7 +21,7 @@ fun main() {
     )
 
     lifecycle.attachToDocument()
-
+    document.title = "Advent of Code"
     ComposeViewport(document.body!!) {
         App(rootComponent = rootComponent)
     }
