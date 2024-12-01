@@ -1,37 +1,59 @@
 package retar.advent.code
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.painterResource
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.experimental.stack.ChildStack
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.PredictiveBackParams
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.plus
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.scale
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.materialPredictiveBackAnimatable
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-import adventofcode.composeapp.generated.resources.Res
-import adventofcode.composeapp.generated.resources.compose_multiplatform
+import retar.advent.code.historianhysteria.HistorianHysteriaScreen
+import retar.advent.code.navigation.RootComponent
 
 @Composable
 @Preview
-fun App() {
+fun App(rootComponent: RootComponent) {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
-            }
+        Box(Modifier.fillMaxSize()) {
+            RootContent(
+                rootComponent
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalDecomposeApi::class)
+@Composable
+fun RootContent(
+    component: RootComponent,
+    modifier: Modifier = Modifier,
+) {
+    ChildStack(
+        stack = component.childStack,
+        modifier = modifier,
+        animation = stackAnimation(
+            animator = fade() + scale(),
+            predictiveBackParams = {
+                PredictiveBackParams(
+                    backHandler = component.backHandler,
+                    onBack = component::onBackClicked,
+                    animatable = ::materialPredictiveBackAnimatable,
+                )
+            },
+        ),
+    ) {
+        when (val child = it.instance) {
+            is RootComponent.Child.HistorianHysteria -> HistorianHysteriaScreen(
+                component = child.component,
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }
